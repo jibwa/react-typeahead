@@ -165,10 +165,17 @@ var Typeahead = React.createClass({
 
   _setOptionValue: function(option) {
     var displayOption = this._generateOptionToStringFor(this.props.displayOption);
-    var optionString = displayOption(option, 0);
+    var optionString = "";
+    if (option !== null){
+  	  optionString = displayOption(option, 0);
+    }
 
     var formInputOption = this._generateOptionToStringFor(this.props.formInputOption || displayOption);
-    var formInputOptionString = formInputOption(option);
+
+    var formInputOptionString = "";
+    if (option !== null){
+      formInputOptionString = formInputOption(option);
+    }
 
     this.setState({visible: this.getOptionsForValue(optionString, this.props.options),
                    selection: formInputOptionString,
@@ -295,11 +302,14 @@ var Typeahead = React.createClass({
 
     // The value prop is changed
     if (nextProps.value !== this.props.value) {
-      options = this.getOptionsForValue(nextProps.value, nextProps.options);
-
-      // if we have only one option matching, we can choose it
-      if (options.length === 1) {
-        this._setOptionValue(options[0]);
+      if (nextProps.value === null){
+        this._setOptionValue(null);
+      } else {
+      	options = this.getOptionsForValue(nextProps.value, nextProps.options);
+      	// if we have only one option matching, we can choose it
+      	if (options.length === 1) {
+          this._setOptionValue(options[0]);
+        }
       }
     }
 
